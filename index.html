@@ -1021,6 +1021,10 @@
 
   <script>
     const toggles = document.querySelectorAll('.individual-detail-toggle');
+    const menuToggle = document.getElementById('menu-toggle-open');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    // 1. Handle Property Details Accordion
     toggles.forEach(toggle => {
       toggle.addEventListener('change', function() {
         if (this.checked) {
@@ -1029,6 +1033,26 @@
           });
         }
       });
+    });
+
+    // 2. Mobile Hamburger Auto-Close on link click
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (menuToggle) menuToggle.checked = false;
+      });
+    });
+
+    // 3. Global Click: Close everything if tapping background/elsewhere
+    document.addEventListener('click', function(event) {
+      // Close property details if clicking outside the active property card
+      if (!event.target.closest('.property-card')) {
+        toggles.forEach(toggle => toggle.checked = false);
+      }
+
+      // Close hamburger menu if clicking outside the navbar container
+      if (menuToggle && menuToggle.checked && !event.target.closest('.navbar')) {
+        menuToggle.checked = false;
+      }
     });
   </script>
 </body>
